@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+venv/
+.idea/
+MANIFEST
+*.mo
+*.pot
+local_settings.py

@@ -1,0 +1,62 @@
+{% load cms_tags menu_tags%}
+{% spaceless %}
+{% if lang == 'nl' and not instance.nl%}
+  <p>Er bestaat geen Nederlands vertaling van deze pagina.</p>
+  {% if targetlang %}
+    {% if instance.fr %}
+      <p>Je kan de versie in het <v-btn @click="openTranslation('fr')">Frans</v-btn> lezen</p>
+    {% endif %}
+    {% if instance.en %}
+      <p>Je kan de versie in het <v-btn @click="openTranslation('de')">Duits</v-btn> lezen</p>
+    {% endif %}
+    {% if instance.de %}
+      <p>Je kan de versie in het <v-btn @click="openTranslation('en')">Engels</v-btn> lezen</p>
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% if lang == 'fr' and not instance.fr%}
+  {% if not targetlang %}
+    <p>Il n'y a pas version française de cette page.</p>
+    {% if instance.nl %}
+      <p>Vous pouvez lire la version en <v-btn @click="openTranslation('nl')">néerlandais</v-btn></p>
+    {% endif %}
+    {% if instance.en %}
+      <p>Vous pouvez lire la version en <v-btn @click="openTranslation('de')">allemand</v-btn></p>
+    {% endif %}
+    {% if instance.de %}
+      <p>Vous pouvez lire la version en <v-btn @click="openTranslation('en')">anglais</v-btn></p>
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% if lang == 'en' and not instance.en%}
+  {% if not targetlang %}
+    <p>There exists no English version of this page.</p>
+    {% if instance.nl %}
+      <p>You can read the version in<v-btn @click="openTranslation('nl')">Dutch</v-btn></p>
+    {% endif %}
+    {% if instance.fr %}
+      <p>You can read the version in<v-btn @click="openTranslation('fr')">French</v-btn></p>
+    {% endif %}
+    {% if instance.de %}
+      <p>You can read the version in<v-btn @click="openTranslation('de')">German</v-btn></p>
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% if lang == 'de' and not instance.en%}
+  {% if not targetlang %}
+    <p>Es gibt keine deutsche Version dieser Seite.</p>
+    {% if instance.nl %}
+      <p>Sie können die Vesion auf <v-btn @click="openTranslation('nl')">Niederländisch</v-btn> lesen</p>
+    {% endif %}
+    {% if instance.fr %}
+      <p>Sie können die Version auf <v-btn @click="openTranslation('fr')">Französisch</v-btn> lesen</p>
+    {% endif %}
+    {% if instance.en %}
+      <p>Sie können die Version auf <v-btn @click="openTranslation('en')">Englisch</v-btn> lesen</p>
+    {% endif %}
+  {% endif %}
+{% endif %}
+{% endspaceless %}

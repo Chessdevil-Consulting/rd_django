@@ -1,0 +1,11 @@
+cmsplugin-filer
+Django<2
+django-cms
+django-filer
+django-sekizai
+djangocms-admin-style
+djangocms-attributes-field
+djangocms-file
+easy-thumbnails==2.5
+html5lib==0.9999999
+Pillow
