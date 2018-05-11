@@ -27,7 +27,7 @@ class RdI18nPlugin(CMSPluginBase):
     model = RdTranslationAvailable
     name = _("Available Translations")
     module = 'Reddevil'
-    render_template = "rd_plugins/available_languages.html"
+    render_template = "rd_django/available_languages.html"
 
     def render(self, context, instance, placeholder):
         context['lang'] = context['targetlang'] if 'targetlang' in context \
@@ -51,7 +51,7 @@ class RdGridContainerPlugin(CMSPluginBase):
     model = RdGridContainer
     name = _('Container')
     module = 'Reddevil'
-    render_template = 'rd_plugins/grid_container.html'
+    render_template = 'rd_django/grid_container.html'
     allow_children = True
 
     def render(self, context, instance, placeholder):
@@ -70,7 +70,7 @@ class RdGridLayoutPlugin(CMSPluginBase):
     model = RdGridLayout
     name = _('Layout')
     module = 'Reddevil'
-    render_template = 'rd_plugins/grid_layout.html'
+    render_template = 'rd_django/grid_layout.html'
     allow_children = True
     child_classes = ['RdGridCellPlugin']
 
@@ -90,7 +90,7 @@ class RdGridCellPlugin(CMSPluginBase):
     model = RdGridCell
     name = _('Cell')
     module = 'Reddevil'
-    render_template = 'rd_plugins/grid_cell.html'
+    render_template = 'rd_django/grid_cell.html'
     allow_children = True
     require_parent = True
     parent_classes = ['RdGridLayoutPlugin']

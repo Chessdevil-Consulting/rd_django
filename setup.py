@@ -20,7 +20,7 @@ from setuptools import setup, find_packages
 requires = []
 
 setup(
-    name='kbsb',
+    name='rd_django',
     version='0.1',
     description='Reddevil django addons',
     long_description='Reddevil django addons',
