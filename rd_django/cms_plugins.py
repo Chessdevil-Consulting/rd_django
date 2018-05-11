@@ -26,7 +26,7 @@ class RdI18nPlugin(CMSPluginBase):
 
     model = RdTranslationAvailable
     name = _("Available Translations")
-    module = 'Chessdevil'
+    module = 'Reddevil'
     render_template = "rd_plugins/available_languages.html"
 
     def render(self, context, instance, placeholder):
@@ -50,7 +50,7 @@ class RdGridContainerPlugin(CMSPluginBase):
 
     model = RdGridContainer
     name = _('Container')
-    module = 'Chessdevil'
+    module = 'Reddevil'
     render_template = 'rd_plugins/grid_container.html'
     allow_children = True
 
@@ -69,7 +69,7 @@ class RdGridLayoutPlugin(CMSPluginBase):
 
     model = RdGridLayout
     name = _('Layout')
-    module = 'Chessdevil'
+    module = 'Reddevil'
     render_template = 'rd_plugins/grid_layout.html'
     allow_children = True
     child_classes = ['RdGridCellPlugin']
@@ -89,7 +89,7 @@ class RdGridCellPlugin(CMSPluginBase):
 
     model = RdGridCell
     name = _('Cell')
-    module = 'Chessdevil'
+    module = 'Reddevil'
     render_template = 'rd_plugins/grid_cell.html'
     allow_children = True
     require_parent = True
