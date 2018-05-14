@@ -1,3 +1,8 @@
+0.2
+===
+ - new feature: tag render_translation_block
+ - available languages: de,en,fr,nl
+
 0.1
 ===
  - intial commit
