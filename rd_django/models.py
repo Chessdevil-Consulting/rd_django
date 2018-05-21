@@ -12,40 +12,46 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+import collections
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from cms.models.pluginmodel import CMSPlugin
 
-# translations
 
-class RdTranslationAvailable(CMSPlugin):
-    nl = models.BooleanField(default=False, verbose_name=_('Dutch version available'))
-    fr = models.BooleanField(default=False, verbose_name=_('French version available'))
-    de = models.BooleanField(default=False, verbose_name=_('German version available'))
-    en = models.BooleanField(default=False, verbose_name=_('English version available'))
+# vuetify container
 
-# grid
+class RdGridContainerConstants:
 
-from .constants import (
-    GRID_CELL_SIZES,
-    GRID_CONTAINER_CHOICES,
-    GRID_DISPLAYS,
-    GRID_LAYOUT_CHOICES,
-    GRID_GUTTER_CHOICES,
-)
+    CONTAINERS = (
+        ('fixed', _('Fixed container')),
+        ('fluid', _('Fluid container')),
+    )
+    GUTTERS = (
+        ('', _('no gutter')),
+        ('xs', _('extra small gutter')),
+        ('sm', _('small gutter')),
+        ('md', _('medium gutter')),
+        ('lg', _('large gutter')),
+        ('xl', _('extra large gutter')),
+    )
 
 class RdGridContainer(CMSPlugin):
+    """
+    a db model for a <v-container> element
+    """
+
     container = models.CharField(
         verbose_name=_('Container type'),
-        choices=GRID_CONTAINER_CHOICES,
-        default=GRID_CONTAINER_CHOICES[0][0],
+        choices=RdGridContainerConstants.CONTAINERS,
+        default=RdGridContainerConstants.CONTAINERS[0][0],
         blank=True,
         max_length=20,
     )
     gutter = models.CharField(
         verbose_name=_('Gutter between cells'),
-        choices=GRID_GUTTER_CHOICES,
-        default=GRID_GUTTER_CHOICES[0][0],
+        choices=RdGridContainerConstants.GUTTERS,
+        default=RdGridContainerConstants.GUTTERS[0][0],
         max_length=3,
         blank=True,
     )
@@ -55,21 +61,34 @@ class RdGridContainer(CMSPlugin):
 
     def get_short_description(self):
         text = ''
-        for item in GRID_CONTAINER_CHOICES:
+        for item in RdGridContainerConstants.CONTAINERS:
             if item[0] == self.container:
                 text = item[1]
         gutter = ''
         if item[0] == self.container:
-            for item in GRID_GUTTER_CHOICES:
+            for item in RdGridContainerConstants.GUTTERS:
                 if item[0] == self.gutter:
                     gutter = item[1]
         return '({}, {})'.format(text, gutter)
 
+# vuetify layout
+
+class RdGridLayoutConstants:
+
+    LAYOUTS = (
+        ('horizontal', _('Horizontal layout')),
+        ('vertical', _('Vertical layout')),
+    )
+
 class RdGridLayout(CMSPlugin):
+    """
+    a db model for a <v-layout> element
+    """
+
     layout = models.CharField(
         verbose_name=_('direction'),
-        choices=GRID_LAYOUT_CHOICES,
-        default=GRID_LAYOUT_CHOICES[0][0],
+        choices=RdGridLayoutConstants.LAYOUTS,
+        default=RdGridLayoutConstants.LAYOUTS[0][0],
         max_length=20,
     )
     wrap = models.BooleanField(
@@ -82,80 +101,92 @@ class RdGridLayout(CMSPlugin):
 
     def get_short_description(self):
         text = []
-        for item in GRID_LAYOUT_CHOICES:
+        for item in RdGridLayoutConstants.LAYOUTS:
             if item[0] == self.layout:
                 text.append(str(item[1]))
         if self.wrap:
             text.append(str(_('wrap')))
         return '({})'.format(', '.join(text))
 
+
+# veutify flex
+
+class RdGridCellConstants:
+
+    SIZES = [('', '')] + [(str(i + 1), str(i + 1)) for i in range(12)]
+    DISPLAYS = ['xs', 'sm', 'md', 'lg', 'xl']
+
 class RdGridCell(CMSPlugin):
+    """
+    a db model for <v-flex> element
+    """
+
     xs_size = models.CharField(
         verbose_name=_('width cell for extra small display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     sm_size = models.CharField(
         verbose_name=_('width cell for small display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     md_size = models.CharField(
         verbose_name=_('width cell medium display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     lg_size = models.CharField(
         verbose_name=_('width cell large display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     xl_size = models.CharField(
         verbose_name=_('width cell extra large display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     xs_offset = models.CharField(
         verbose_name=_('offset for extra small display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     sm_offset = models.CharField(
         verbose_name=_('offset for small display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     md_offset = models.CharField(
         verbose_name=_('offset medium display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     lg_offset = models.CharField(
         verbose_name=_('offset large display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     xl_offset = models.CharField(
         verbose_name=_('offset extra large display'),
-        choices=GRID_CELL_SIZES,
+        choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
@@ -166,11 +197,77 @@ class RdGridCell(CMSPlugin):
 
     def get_short_description(self):
         text = []
-        for d in GRID_DISPLAYS:
+        for d in RdGridCellConstants.DISPLAYS:
             fieldsize = getattr(self, '{}_size'.format(d))
             if fieldsize:
                 text.append('{}{}'.format(d, fieldsize))
-        for d in GRID_DISPLAYS:
+        for d in RdGridCellConstants.DISPLAYS:
             fieldoffset = getattr(self, '{}_offset'.format(d))
             if fieldoffset:
                 text.append('offset-{}{}'.format(d, fieldoffset))
+
+# icon
+
+class RdIconConstants:
+
+    SIZES = (
+        ('', _('standard')),
+        ('small', _('small')),
+        ('medium', _('medium')),
+        ('large', _('large')),
+        ('x-large', _('extra large')),
+    )
+    THEMES = (
+        ('', _('standard')),
+        ('dark', _('dark')),
+        ('light', _('light')),
+    )
+
+class RdIcon(CMSPlugin):
+    """
+    a db model for a vuetify icon
+    """
+
+    icon = models.CharField(
+        verbose_name=_('Icon'),
+        max_length=40,
+    )
+    size = models.CharField(
+        verbose_name=_('size of icon'),
+        choices = RdIconConstants.SIZES,
+        default='',
+        blank=True,
+        max_length=10,
+    )
+    color = models.CharField(
+        verbose_name=_('Color'),
+        max_length=30,
+        default='',
+        blank=True,
+    )
+    theme = models.CharField(
+        verbose_name=_('Theme'),
+        choices = RdIconConstants.THEMES,
+        max_length=10,
+        default='',
+        blank=True,
+    )
+    additional_classes= models.CharField(
+        verbose_name=_('Additional CSS classes (separated by a space)'),
+        max_length=255,
+        default='',
+        blank=True,
+    )
+    def __str__(self):
+        return str(self.pk)
+
+    def get_short_description(self):
+        text = [self.icon]
+        for sz in RdIconConstants.SIZES:
+            if sz[0] == self.size:
+                text.append(str(sz[1]))
+        if self.color:
+            text.append(self.color)
+        if self.theme:
+            text.append(self.theme)
+        return ' '.join(text)

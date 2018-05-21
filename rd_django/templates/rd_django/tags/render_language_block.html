@@ -1,0 +1,78 @@
+{% load cms_tags menu_tags%}
+
+<v-container>
+  <v-layout column>
+  {% spaceless %}
+  {% if language == 'nl' and 'nl' not in available_languages%}
+    <p>Er bestaat geen Nederlandse vertaling van deze pagina.</p>
+    {% if 'fr' in available_languages %}
+      <p>Je kan de versie in het <v-btn @click="openTranslation('fr')">Frans</v-btn> lezen</p>
+    {% endif %}
+    {% if 'en' in available_languages %}
+      <p>Je kan de versie in het <v-btn @click="openTranslation('de')">Duits</v-btn> lezen</p>
+    {% endif %}
+    {% if 'de' in available_languages %}
+      <p>Je kan de versie in het <v-btn @click="openTranslation('en')">Engels</v-btn> lezen</p>
+    {% endif %}
+  {% endif %}
+  {% endspaceless %}
+
+  {% spaceless %}
+  {% if language == 'fr' and 'fr' not in available_languages %}
+    <p>Il n'y a pas de version en français de cette page.</p>
+    {% if 'nl' in available_languages %}
+      <p>Vous pouvez lire la version en <v-btn @click="openTranslation('nl')">néerlandais</v-btn></p>
+    {% endif %}
+    {% if 'de' in available_languages %}
+      <p>Vous pouvez lire la version en <v-btn @click="openTranslation('de')">allemand</v-btn></p>
+    {% endif %}
+    {% if 'en' in available_languages %}
+      <p>Vous pouvez lire la version en <v-btn @click="openTranslation('en')">anglais</v-btn></p>
+    {% endif %}
+  {% endif %}
+  {% endspaceless %}
+
+
+  {% spaceless %}
+  {% if language == 'en' and 'en' not in available_languages%}
+    <p>There exists no English version of this page.</p>
+    {% if 'nl' in available_languages %}
+      <p>You can read the version in<v-btn @click="openTranslation('nl')">Dutch</v-btn></p>
+    {% endif %}
+    {% if 'fr' in available_languages %}
+      <p>You can read the version in<v-btn @click="openTranslation('fr')">French</v-btn></p>
+    {% endif %}
+    {% if 'de' in available_languages %}
+      <p>You can read the version in<v-btn @click="openTranslation('de')">German</v-btn></p>
+    {% endif %}
+  {% endif %}
+  {% endspaceless %}
+
+  {% spaceless %}
+  {% if language == 'de' and 'de' not in available_languages%}
+    <p>Es gibt keine deutsche Version dieser Seite.</p>
+    {% if 'nl' in available_languages %}
+      <p>Sie können die Version auf <v-btn @click="openTranslation('nl')">Niederländisch</v-btn> lesen</p>
+    {% endif %}
+    {% if 'fr' in available_languages %}
+      <p>Sie können die Version auf <v-btn @click="openTranslation('fr')">Französisch</v-btn> lesen</p>
+    {% endif %}
+    {% if 'en' in available_languages %}
+      <p>Sie können die Version auf <v-btn @click="openTranslation('en')">Englisch</v-btn> lesen</p>
+    {% endif %}
+  {% endif %}
+  {% endspaceless %}
+
+  {% for l in available_languages %}
+    <v-card v-show="showTranslated == '{{ l }}'">
+      {% spaceless %}
+      <v-card-text>
+        <div slot="translated-page">
+          {% show_placeholder "content" request.current_page.id l %}
+        </div>
+      </v-card-text>
+      {% endspaceless %}
+    </v-card>
+  {%  endfor %}
+  </v-layout>
+</v-container>

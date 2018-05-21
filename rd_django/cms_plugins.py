@@ -1,13 +1,4 @@
-
-
-import logging
-log = logging.getLogger(__name__)
-
-from cms.plugin_base import CMSPluginBase
-from cms.plugin_pool import plugin_pool
-from django.utils.translation import ugettext_lazy as _
-
-from .models import RdTranslationAvailable#    Copyright 2017 - 2018 Ruben Decrop
+#    Copyright 2017 - 2018 Ruben Decrop
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -21,29 +12,23 @@ from .models import RdTranslationAvailable#    Copyright 2017 - 2018 Ruben Decro
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-@plugin_pool.register_plugin
-class RdI18nPlugin(CMSPluginBase):
+import logging
+log = logging.getLogger(__name__)
 
-    model = RdTranslationAvailable
-    name = _("Available Translations")
-    module = 'Reddevil'
-    render_template = "rd_django/available_languages.html"
+from cms.plugin_base import CMSPluginBase
+from cms.plugin_pool import plugin_pool
+from django.utils.translation import ugettext_lazy as _
 
-    def render(self, context, instance, placeholder):
-        context['lang'] = context['targetlang'] if 'targetlang' in context \
-            else context['language']
-        context = super(RdI18nPlugin, self).render(
-            context, instance, placeholder)
-        return context
+
 
 
 from .models import (
     RdGridContainer,
     RdGridLayout,
     RdGridCell,
+    RdGridCellConstants,
+    RdIcon,
 )
-
-from .constants import GRID_DISPLAYS
 
 @plugin_pool.register_plugin
 class RdGridContainerPlugin(CMSPluginBase):
@@ -98,7 +83,7 @@ class RdGridCellPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         cells = []
         offsets = []
-        for d in GRID_DISPLAYS:
+        for d in RdGridCellConstants.DISPLAYS:
             fieldsize = getattr(instance, '{}_size'.format(d))
             if fieldsize:
                 cells.append('{}{}'.format(d, fieldsize))
@@ -108,4 +93,23 @@ class RdGridCellPlugin(CMSPluginBase):
         context['cells'] = ' '.join(cells) if cells else ''
         context['offsets'] = ' '.join(offsets) if offsets else ''
         return super(RdGridCellPlugin, self).render(
+            context, instance, placeholder)
+
+@plugin_pool.register_plugin
+class RdIconPlugin(CMSPluginBase):
+
+    model = RdIcon
+    name = _('Icon')
+    module = 'Reddevil'
+    render_template = 'rd_django/icon.html'
+    text_enabled = True
+
+    def render(self, context, instance, placeholder):
+        context['icon'] = instance.icon
+        context['size'] = instance.size
+        context['color'] = instance.color
+        context['additional_classes'] = ''
+        if instance.additional_classes:
+            context['additional_classes'] = 'class="{}"'.format(instance.additional_classes)
+        return super(RdIconPlugin, self).render(
             context, instance, placeholder)
