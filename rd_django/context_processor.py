@@ -12,28 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+from django.conf import settings # import the settings file
 
-import os
-
-from setuptools import setup, find_packages
-
-requires = []
-
-setup(
-    name='rd_django',
-    version='0.3',
-    description='Reddevil django addons',
-    long_description='Reddevil django addons',
-    classifiers=[
-        "Programming Language :: Python",
-        "Framework :: Django-cms",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-    ],
-    author='Ruben Decrop',
-    author_email='ruben@decrop.net',
-    keywords='Reddevil',
-    packages=find_packages(),
-    include_package_data=True,
-    zip_safe=False,
-)
+def stage(request):
+    return {'STAGE': settings.STAGE}
