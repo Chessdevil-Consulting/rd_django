@@ -271,3 +271,39 @@ class RdIcon(CMSPlugin):
         if self.theme:
             text.append(self.theme)
         return ' '.join(text)
+
+
+class RdPerson(CMSPlugin):
+    """
+    a db model for a vuetify icon
+    """
+
+    lastname = models.CharField(
+        verbose_name=_('Last name'),
+        max_length=40,
+    )
+    firstname = models.CharField(
+        verbose_name=_('First name'),
+        max_length=40,
+    )
+    email = models.CharField(
+        verbose_name=_('Email Address'),
+        max_length=50,
+    )
+    mobile = models.CharField(
+        verbose_name=_('Theme'),
+        choices = RdIconConstants.THEMES,
+        max_length=15,
+        default='',
+        blank=True,
+    )
+    title= models.CharField(
+        verbose_name=_('Title'),
+        max_length=40,
+    )
+    def __str__(self):
+        return "{} {}".format(self.firstname, self.lastname)
+
+    def get_short_description(self):
+        return "{} {}".format(self.firstname, self.lastname)
+

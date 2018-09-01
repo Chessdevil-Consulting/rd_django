@@ -19,15 +19,13 @@ from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django.utils.translation import ugettext_lazy as _
 
-
-
-
 from .models import (
     RdGridContainer,
     RdGridLayout,
     RdGridCell,
     RdGridCellConstants,
     RdIcon,
+    RdPerson,
 )
 
 @plugin_pool.register_plugin
@@ -112,4 +110,22 @@ class RdIconPlugin(CMSPluginBase):
         if instance.additional_classes:
             context['additional_classes'] = 'class="{}"'.format(instance.additional_classes)
         return super(RdIconPlugin, self).render(
+            context, instance, placeholder)
+
+@plugin_pool.register_plugin
+class RdPersonPlugin(CMSPluginBase):
+
+    model = RdPerson
+    name = _('Person')
+    module = 'Reddevil'
+    render_template = 'rd_django/person.html'
+    text_enabled = True
+
+    def render(self, context, instance, placeholder):
+        context['lastname'] = instance.lastname
+        context['firstname'] = instance.firstname
+        context['title'] = instance.title
+        context['email'] = instance.email
+        context['mobile'] = instance.mobile
+        return super(RdPersonPlugin, self).render(
             context, instance, placeholder)
