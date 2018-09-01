@@ -55,4 +55,4 @@ def render_language_block(context, *args):
 @register.simple_tag(takes_context=True)
 def page_title_en(context):
     page = context.request.current_page
-    return page.get_title_obj('en')
+    return page.get_title_obj('en').title
