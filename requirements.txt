@@ -6,6 +6,8 @@ django-sekizai
 djangocms-admin-style
 djangocms-attributes-field
 djangocms-file
+djangorestframework
 easy-thumbnails==2.5
 html5lib==0.9999999
+requests
 Pillow

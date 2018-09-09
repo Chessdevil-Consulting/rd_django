@@ -273,37 +273,32 @@ class RdIcon(CMSPlugin):
         return ' '.join(text)
 
 
-class RdPerson(CMSPlugin):
+class RdPersonGroup(CMSPlugin):
     """
-    a db model for a vuetify icon
+    a db model for a list of person in a group
     """
-
-    lastname = models.CharField(
-        verbose_name=_('Last name'),
-        max_length=40,
-    )
-    firstname = models.CharField(
-        verbose_name=_('First name'),
-        max_length=40,
-    )
-    email = models.CharField(
-        verbose_name=_('Email Address'),
-        max_length=50,
-    )
-    mobile = models.CharField(
-        verbose_name=_('Theme'),
-        choices = RdIconConstants.THEMES,
-        max_length=15,
-        default='',
-        blank=True,
-    )
-    title= models.CharField(
-        verbose_name=_('Title'),
-        max_length=40,
+    group = models.CharField(
+        verbose_name=_('Group'),
+        max_length=39,
     )
     def __str__(self):
-        return "{} {}".format(self.firstname, self.lastname)
+        return self.group
 
     def get_short_description(self):
-        return "{} {}".format(self.firstname, self.lastname)
+        return self.group
+
+class RdPerson(CMSPlugin):
+    """
+    a db model for a vuetify person
+    """
+
+    idbel = models.CharField(
+        verbose_name=_('ID number RBCF'),
+        max_length=10,
+    )
+    def __str__(self):
+        return self.idbel
+
+    def get_short_description(self):
+        return self.idbel
 

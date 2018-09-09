@@ -15,8 +15,11 @@
 import logging
 log = logging.getLogger(__name__)
 
+import requests
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
+from django.conf import settings # import the settings file
+from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from .models import (
@@ -25,6 +28,7 @@ from .models import (
     RdGridCell,
     RdGridCellConstants,
     RdIcon,
+    RdPersonGroup,
     RdPerson,
 )
 
@@ -113,19 +117,44 @@ class RdIconPlugin(CMSPluginBase):
             context, instance, placeholder)
 
 @plugin_pool.register_plugin
+class RdPersonGroupPlugin(CMSPluginBase):
+
+    model = RdPersonGroup
+    name = _('Group of persons')
+    module = 'Reddevil'
+    render_template = 'rd_django/person_group.html'
+    allow_children = True
+    child_classes = ['RdPersonPlugin']
+
+    def render(self, context, instance, placeholder):
+        return super(RdPersonGroupPlugin, self).render(
+            context, instance, placeholder)
+
+
+class RdPersonForm(forms.ModelForm):
+
+    idbel = forms.ChoiceField(choices=('45608','28908'))
+
+
+@plugin_pool.register_plugin
 class RdPersonPlugin(CMSPluginBase):
 
     model = RdPerson
     name = _('Person')
     module = 'Reddevil'
     render_template = 'rd_django/person.html'
-    text_enabled = True
+    require_parent = True
+    # form = RdPersonForm
 
     def render(self, context, instance, placeholder):
-        context['lastname'] = instance.lastname
-        context['firstname'] = instance.firstname
-        context['title'] = instance.title
-        context['email'] = instance.email
-        context['mobile'] = instance.mobile
+        ca = settings.CHESSAPI_URL
+        group = instance.parent.rd_django_rdpersongroup.group
+        rs = requests.get("{}/members/member/{}".format(ca, instance.idbel))
+        person = rs.json()
+        person['role'] = None
+        for role in person.get('org', []):
+            if role.get('group') == group:
+                person['role'] = role.get('role')
+        context.update(person)
         return super(RdPersonPlugin, self).render(
             context, instance, placeholder)
