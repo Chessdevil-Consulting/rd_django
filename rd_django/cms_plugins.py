@@ -149,9 +149,10 @@ class RdPersonPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         ca = settings.CHESSAPI_URL
         group = instance.parent.rd_django_rdpersongroup.group
-        rs = requests.get("{}/members/member/{}".format(ca, instance.idbel))
+        rs = requests.get("{}members/member/{}".format(ca, instance.idbel))
         person = rs.json()
         person['role'] = None
+        person['photourl'] = "{}members/photo/{}".format(ca, instance.idbel)
         for role in person.get('org', []):
             if role.get('group') == group:
                 person['role'] = role.get('role')
