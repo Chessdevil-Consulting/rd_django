@@ -150,15 +150,24 @@ class RdPersonPlugin(CMSPluginBase):
         ca = settings.CHESSAPI_URL
         group = instance.parent.rd_django_rdpersongroup.group
         rs = requests.get("{}members/member/{}".format(ca, instance.idbel))
-        person = rs.json()
-        person['role'] = None
+        if rs.status_code != 200:
+            person = {
+                'first_name': '',
+                'last_name': 'Not found',
+                'role': '',
+                'mobile': '',
+                'email': ''
+            }
+        else:
+            person = rs.json()
+            person['role'] = None
+            for role in person.get('org', []):
+                if role.get('group') == group:
+                    person['role'] = role.get('role')
         if person.get('photolength'):
             person['photourl'] = "{}members/photo/{}".format(ca, instance.idbel)
         else:
-            person['photurl'] = '/static/img/nobody.png'
-        for role in person.get('org', []):
-            if role.get('group') == group:
-                person['role'] = role.get('role')
+            person['photourl'] = '/static/img/nobody.png'
         context.update(person)
         return super(RdPersonPlugin, self).render(
             context, instance, placeholder)
