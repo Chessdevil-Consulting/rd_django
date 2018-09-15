@@ -152,7 +152,10 @@ class RdPersonPlugin(CMSPluginBase):
         rs = requests.get("{}members/member/{}".format(ca, instance.idbel))
         person = rs.json()
         person['role'] = None
-        person['photourl'] = "{}members/photo/{}".format(ca, instance.idbel)
+        if person.get('photolength'):
+            person['photourl'] = "{}members/photo/{}".format(ca, instance.idbel)
+        else:
+            person['photurl'] = '/static/img/nobody.png'
         for role in person.get('org', []):
             if role.get('group') == group:
                 person['role'] = role.get('role')
