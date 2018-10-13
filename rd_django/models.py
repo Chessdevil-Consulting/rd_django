@@ -302,3 +302,26 @@ class RdPerson(CMSPlugin):
     def get_short_description(self):
         return self.idbel
 
+
+class RdTabGroup(CMSPlugin):
+    """
+    a db model for a group of tabs
+    """
+    slidercolor = models.CharField(
+        verbose_name=_('Slider color'),
+        max_length=40,
+        default='accent'
+    )
+
+class RdTab(CMSPlugin):
+    """
+    a db model for a tabular UI component inside a tabgroup
+    """
+
+    tabtitle = models.CharField(
+        verbose_name=_('Title of the tab'),
+        max_length=40,
+    )
+    def __str__(self):
+        return self.tabtitle
+

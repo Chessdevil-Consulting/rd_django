@@ -21,7 +21,7 @@ requires = []
 
 setup(
     name='rd_django',
-    version='0.5.1',
+    version='0.6.0',
     description='Reddevil django addons',
     long_description='Reddevil django addons',
     classifiers=[

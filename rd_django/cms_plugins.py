@@ -30,6 +30,8 @@ from .models import (
     RdIcon,
     RdPersonGroup,
     RdPerson,
+    RdTabGroup,
+    RdTab,
 )
 
 @plugin_pool.register_plugin
@@ -170,4 +172,36 @@ class RdPersonPlugin(CMSPluginBase):
             person['photourl'] = '/static/img/nobody.png'
         context.update(person)
         return super(RdPersonPlugin, self).render(
+            context, instance, placeholder)
+
+@plugin_pool.register_plugin
+class RdTabGroupPlugin(CMSPluginBase):
+
+    model = RdTabGroup
+    name = _('Group of tabs')
+    module = 'Reddevil'
+    render_template = 'rd_django/tab_group.html'
+    allow_children = True
+    child_classes = ['RdTabPlugin']
+
+    def render(self, context, instance, placeholder):
+        context['slidercolor'] = instance.slidercolor
+        return super(RdTabGroupPlugin, self).render(
+            context, instance, placeholder)
+
+@plugin_pool.register_plugin
+class RdTabPlugin(CMSPluginBase):
+
+    model = RdTab
+    name = _('Tab')
+    module = 'Reddevil'
+    render_template = 'rd_django/tab.html'
+    require_parent = True
+    allow_children = True
+
+    # form = RdPersonForm
+
+    def render(self, context, instance, placeholder):
+        context['tabtitle'] = instance.tabtitle
+        return super(RdTabPlugin, self).render(
             context, instance, placeholder)
