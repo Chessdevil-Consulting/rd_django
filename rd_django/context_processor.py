@@ -14,5 +14,8 @@
 
 from django.conf import settings # import the settings file
 
-def stage(request):
-    return {'STAGE': settings.STAGE}
+def tamplate_settings(request):
+    if not hasattr(settings, 'TEMPLATE_SETTINGS'):
+        return {}
+    ts = settings.TEMPLATE_SETTINGS
+    return {k:getattr(settings,k,None) for k in ts}
