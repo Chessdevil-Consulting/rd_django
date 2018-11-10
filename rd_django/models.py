@@ -325,3 +325,24 @@ class RdTab(CMSPlugin):
     def __str__(self):
         return self.tabtitle
 
+class RdBox(CMSPlugin):
+    """
+    a db model for a tabular UI component inside a tabgroup
+    """
+
+    boxtitle = models.CharField(
+        verbose_name=_('Title of the box'),
+        max_length=40,
+    )
+    boxtitlecolor = models.CharField(
+        verbose_name=_('Box title color'),
+        max_length=40,
+        default='black'
+    )
+    boxbackgroundcolor = models.CharField(
+        verbose_name=_('Box background color title'),
+        max_length=40,
+        default='grey'
+    )
+    def __str__(self):
+        return self.boxtitle

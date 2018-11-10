@@ -23,6 +23,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from .models import (
+    RdBox,
     RdGridContainer,
     RdGridLayout,
     RdGridCell,
@@ -204,4 +205,23 @@ class RdTabPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context['tabtitle'] = instance.tabtitle
         return super(RdTabPlugin, self).render(
+            context, instance, placeholder)
+
+
+@plugin_pool.register_plugin
+class RdBoxPlugin(CMSPluginBase):
+
+    model = RdBox
+    name = _('Box')
+    module = 'Reddevil'
+    render_template = 'rd_django/box.html'
+    allow_children = True
+
+    # form = RdPersonForm
+
+    def render(self, context, instance, placeholder):
+        context['boxtitle'] = instance.boxtitle
+        context['boxtitlecolor'] = instance.boxtitlecolor or 'black'
+        context['boxbackgroundcolor'] = instance.boxbackgroundcolor or 'grey'
+        return super(RdBoxPlugin, self).render(
             context, instance, placeholder)
