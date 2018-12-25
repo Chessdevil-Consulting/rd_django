@@ -63,16 +63,5 @@
   {% endif %}
   {% endspaceless %}
 
-  {% for l in available_languages %}
-    <v-card v-show="showTranslated == '{{ l }}'">
-      {% spaceless %}
-      <v-card-text>
-        <div slot="translated-page">
-          {% show_placeholder "content" request.current_page.id l %}
-        </div>
-      </v-card-text>
-      {% endspaceless %}
-    </v-card>
-  {%  endfor %}
   </v-layout>
 </v-container>
