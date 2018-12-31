@@ -31,12 +31,11 @@ from django.template.defaulttags import token_kwargs
 from django.utils import six, translation
 from django.utils.safestring import SafeData, mark_safe
 
-
 register = Library()
 
 translation_strings = {}
 
-def read_translation_files():
+def read_translation_files(request):
     """
     read all translation files  in /static/lang
     and store them in translation_strings
@@ -48,15 +47,16 @@ def read_translation_files():
     sturl = settings.STATIC_URL
     for l,lt in languages:
         try:
-            url = "{0}lang/{1}.json".format(sturl, l)
+            url = request.build_absolute_uri("{0}lang/{1}.json".format(sturl, l))
             r = requests.get(url)
             if r.status_code != 200:
+                log.warning('cannot read lang file {0}: {1}'.format(
+                    url, r.reason))
                 continue
             translation_strings[l] = r.json()
-        except:
+        except Exception as e:
             log.error('Error reading json language file for %s', l)
-
-read_translation_files()
+            raise e
 
 class GetCurrentLanguageNode(Node):
     def __init__(self, variable):
@@ -65,6 +65,24 @@ class GetCurrentLanguageNode(Node):
     def render(self, context):
         context[self.variable] = translation.get_language()
         return ''
+
+class TranslateNode(Node):
+
+    def __init__(self, filter, asvar=False):
+        self.filter = filter
+        self.asvar = asvar
+
+    def render(self, context):
+        read_translation_files(context.request)
+        lang = translation.get_language()
+        value = translation_strings[lang].get(self.filter.token)
+        if not value:
+            log.warning('no %s translation for %s', lang, self.message)
+        if self.asvar:
+            context[self.asvar] = value
+            return ''
+        else:
+            return value
 
 class BlockTranslateNode(Node):
 
@@ -84,6 +102,7 @@ class BlockTranslateNode(Node):
         return msg, vars
 
     def render(self, context, nested=False):
+        read_translation_files(context.request)
         message_context = None
         tmp_context = {}
         singular, vars = self.render_token_list(self.singular)
@@ -111,19 +130,6 @@ class BlockTranslateNode(Node):
             with translation.override(None):
                 result = self.render(context, nested=True)
         return result
-
-
-class LanguageNode(Node):
-    def __init__(self, nodelist, language):
-        self.nodelist = nodelist
-        self.language = language
-
-    def render(self, context):
-        with translation.override(self.language.resolve(context)):
-            output = self.nodelist.render(context)
-        return output
-
-
 
 @register.tag("get_current_language")
 def do_get_current_language(parser, token):
@@ -188,15 +194,8 @@ def do_translate(parser, token):
                 "Unknown argument for '%s' tag: '%s'. The only option "
                 "available is 'as VAR'." % (bits[0], option,)
             )
-    lang = translation.get_language()
-    value = translation_strings[lang].get(message_string)
-    if not value:
-        log.warning('no %s translation for %s', lang, message_string)
-    if asvar:
-        context[asvar] = value
-        return ''
-    else:
-        return value
+    return TranslateNode(message_string)
+
 
 @register.tag("blocktrans")
 def do_block_translate(parser, token):
@@ -206,7 +205,7 @@ def do_block_translate(parser, token):
     Usage::
 
         {% blocktrans %}
-        This is {{ bar }} and {{ boo }}.
+        This is {{ bar }}s and {{ boo }}.
         {% endblocktrans %}
 
     """
