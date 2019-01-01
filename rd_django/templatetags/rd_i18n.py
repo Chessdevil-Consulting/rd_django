@@ -75,9 +75,9 @@ class TranslateNode(Node):
     def render(self, context):
         read_translation_files(context.request)
         lang = translation.get_language()
-        value = translation_strings[lang].get(self.filter.token)
+        value = translation_strings[lang].get(self.filter.var)
         if not value:
-            log.warning('no %s translation for %s', lang, self.message)
+            log.warning('no %s translation for %s', lang, self.filter)
         if self.asvar:
             context[self.asvar] = value
             return ''
