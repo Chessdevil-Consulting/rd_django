@@ -35,6 +35,22 @@ register = Library()
 
 translation_strings = {}
 
+def translate(s, locale):
+    """
+    translate a string in a locale
+    :param s: the string
+    :param locale: the locale
+    :return: the tranlated string or None if no translation is found
+    """
+    if locale not in translation_strings:
+        log.warning('translation language %s not availbe (did you load it?)',
+                    locale)
+        return None
+    value = translation_strings[locale].get(s)
+    if not value:
+        log.warning('no %s translation for %s', lang, s)
+    return value
+
 def read_translation_files(request):
     """
     read all translation files  in /static/lang
@@ -75,9 +91,7 @@ class TranslateNode(Node):
     def render(self, context):
         read_translation_files(context.request)
         lang = translation.get_language()
-        value = translation_strings[lang].get(self.filter.var)
-        if not value:
-            log.warning('no %s translation for %s', lang, self.filter)
+        value = translate(self.filter.var, lang)
         if self.asvar:
             context[self.asvar] = value
             return ''
@@ -102,11 +116,12 @@ class BlockTranslateNode(Node):
         return msg, vars
 
     def render(self, context, nested=False):
+        lang = translation.get_language()
         read_translation_files(context.request)
         message_context = None
         tmp_context = {}
         singular, vars = self.render_token_list(self.singular)
-        result = translation.ugettext(singular)
+        result = translate(singular, lang)
         default_value = context.template.engine.string_if_invalid
 
         def render_value(key):
