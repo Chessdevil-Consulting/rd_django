@@ -10,3 +10,11 @@ MANIFEST
 *.mo
 *.pot
 local_settings.py
+manage.py
+Pipfile
+Pipfile.lock
+db.sqlite3
+sample_rd_django/__init__.py
+sample_rd_django/settings.py
+sample_rd_django/urls.py
+sample_rd_django/wsgi.py
