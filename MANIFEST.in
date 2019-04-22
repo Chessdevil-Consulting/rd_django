@@ -1,8 +1,1 @@
-include requirements.txt
-include setup
-include README.md
-include LICENSE.txt
-include .gitignore
-recursive-include rd_django/locale *
 recursive-include rd_django/templates *
-recursive-include rd_django *.py

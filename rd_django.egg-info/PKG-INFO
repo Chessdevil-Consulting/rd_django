@@ -1,0 +1,12 @@
+Metadata-Version: 1.1
+Name: rd-django
+Version: 0.10.1
+Summary: reddevil django
+Home-page: https://www.chessdevil.net
+Author: Ruben Decrop
+Author-email: ruben@decrop.net
+License: UNKNOWN
+Description: reddevil django
+Platform: UNKNOWN
+Classifier: "Programming Language :: Python"
+Classifier: "Framework :: Django-cms"

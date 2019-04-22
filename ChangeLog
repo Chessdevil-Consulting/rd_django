@@ -1,0 +1,75 @@
+CHANGES
+=======
+
+0.10.1
+------
+
+* samplw
+* sample
+* sample
+* sample
+* added gitignore
+
+0.10
+----
+
+* removed all migrations removed all i18n code removed persons moved to Django 2
+
+0.9.1
+-----
+
+* added translate function in rd\_i18n
+* bugs solved in rd\_i18n
+* bugs solved in rd\_i18n
+* added rd\_i18n template tags
+
+0.8.1
+-----
+
+* removed the translated blocks in the cms oages still need to fixe the openTranslation
+* added rdbox
+
+0.8.0
+-----
+
+* added rdBox
+
+v0.7.0
+------
+
+* version 0.7 removed STAGE, added TEMPLATE\_SETTINGS template context
+* added
+* added nobody photo
+* added nobody photo
+* building version 0.5
+* photo baord members added
+* adding cdmembers app adding RdPersonGroup workaround for empty v-tile-action bug
+* added person
+* change v-icon color settings
+* bug solved in tag page\_title\_en
+* added setup script
+* version 0.4 page\_title\_en tag added
+* added page\_title\_en
+* added context processor stage
+* Added references
+* fix broken db
+* added missing files
+* added RdIcon
+* improced render\_language\_block
+
+0.2
+---
+
+* making rd\_django have a render\_translate\_block
+
+0.1
+---
+
+* renamed to reddevil and rd\_django
+* renamed to reddevil and rd\_django
+* feature list added to docs
+* updated docs
+* cleanup
+* cleanup
+* initila commit qith code
+* initial commit
