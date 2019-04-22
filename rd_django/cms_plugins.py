@@ -28,8 +28,6 @@ from .models import (
     RdGridCell,
     RdGridCellConstants,
     RdIcon,
-    RdPersonGroup,
-    RdPerson,
     RdTabGroup,
     RdTab,
 )
@@ -143,8 +141,6 @@ class RdTabPlugin(CMSPluginBase):
     require_parent = True
     allow_children = True
 
-    # form = RdPersonForm
-
     def render(self, context, instance, placeholder):
         context['tabtitle'] = instance.tabtitle
         return super(RdTabPlugin, self).render(
@@ -158,8 +154,6 @@ class RdBoxPlugin(CMSPluginBase):
     module = 'Reddevil'
     render_template = 'rd_django/box.html'
     allow_children = True
-
-    # form = RdPersonForm
 
     def render(self, context, instance, placeholder):
         context['boxtitle'] = instance.boxtitle
