@@ -15,7 +15,6 @@
 import collections
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from cms.models.pluginmodel import CMSPlugin
 
 
@@ -24,16 +23,16 @@ from cms.models.pluginmodel import CMSPlugin
 class RdGridContainerConstants:
 
     CONTAINERS = (
-        ('fixed', _('Fixed container')),
-        ('fluid', _('Fluid container')),
+        ('fixed', 'Fixed container'),
+        ('fluid', 'Fluid container'),
     )
     GUTTERS = (
-        ('', _('no gutter')),
-        ('xs', _('extra small gutter')),
-        ('sm', _('small gutter')),
-        ('md', _('medium gutter')),
-        ('lg', _('large gutter')),
-        ('xl', _('extra large gutter')),
+        ('', 'no gutter'),
+        ('xs', 'extra small gutter'),
+        ('sm', 'small gutter'),
+        ('md', 'medium gutter'),
+        ('lg', 'large gutter'),
+        ('xl', 'extra large gutter'),
     )
 
 class RdGridContainer(CMSPlugin):
@@ -42,14 +41,14 @@ class RdGridContainer(CMSPlugin):
     """
 
     container = models.CharField(
-        verbose_name=_('Container type'),
+        verbose_name='Container type',
         choices=RdGridContainerConstants.CONTAINERS,
         default=RdGridContainerConstants.CONTAINERS[0][0],
         blank=True,
         max_length=20,
     )
     gutter = models.CharField(
-        verbose_name=_('Gutter between cells'),
+        verbose_name='Gutter between cells',
         choices=RdGridContainerConstants.GUTTERS,
         default=RdGridContainerConstants.GUTTERS[0][0],
         max_length=3,
@@ -76,8 +75,8 @@ class RdGridContainer(CMSPlugin):
 class RdGridLayoutConstants:
 
     LAYOUTS = (
-        ('horizontal', _('Horizontal layout')),
-        ('vertical', _('Vertical layout')),
+        ('horizontal', 'Horizontal layout'),
+        ('vertical', 'Vertical layout'),
     )
 
 class RdGridLayout(CMSPlugin):
@@ -86,13 +85,13 @@ class RdGridLayout(CMSPlugin):
     """
 
     layout = models.CharField(
-        verbose_name=_('direction'),
+        verbose_name='direction',
         choices=RdGridLayoutConstants.LAYOUTS,
         default=RdGridLayoutConstants.LAYOUTS[0][0],
         max_length=20,
     )
     wrap = models.BooleanField(
-        verbose_name=_('Wrap cells if width is exceeded'),
+        verbose_name='Wrap cells if width is exceeded',
         default=True,
     )
 
@@ -105,7 +104,7 @@ class RdGridLayout(CMSPlugin):
             if item[0] == self.layout:
                 text.append(str(item[1]))
         if self.wrap:
-            text.append(str(_('wrap')))
+            text.append(str('wrap'))
         return '({})'.format(', '.join(text))
 
 
@@ -122,70 +121,70 @@ class RdGridCell(CMSPlugin):
     """
 
     xs_size = models.CharField(
-        verbose_name=_('width cell for extra small display'),
+        verbose_name='width cell for extra small display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     sm_size = models.CharField(
-        verbose_name=_('width cell for small display'),
+        verbose_name='width cell for small display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     md_size = models.CharField(
-        verbose_name=_('width cell medium display'),
+        verbose_name='width cell medium display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     lg_size = models.CharField(
-        verbose_name=_('width cell large display'),
+        verbose_name='width cell large display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     xl_size = models.CharField(
-        verbose_name=_('width cell extra large display'),
+        verbose_name='width cell extra large display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     xs_offset = models.CharField(
-        verbose_name=_('offset for extra small display'),
+        verbose_name='offset for extra small display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     sm_offset = models.CharField(
-        verbose_name=_('offset for small display'),
+        verbose_name='offset for small display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     md_offset = models.CharField(
-        verbose_name=_('offset medium display'),
+        verbose_name='offset medium display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     lg_offset = models.CharField(
-        verbose_name=_('offset large display'),
+        verbose_name='offset large display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
         max_length=2,
     )
     xl_offset = models.CharField(
-        verbose_name=_('offset extra large display'),
+        verbose_name='offset extra large display',
         choices=RdGridCellConstants.SIZES,
         default='',
         blank=True,
@@ -211,16 +210,16 @@ class RdGridCell(CMSPlugin):
 class RdIconConstants:
 
     SIZES = (
-        ('', _('standard')),
-        ('small', _('small')),
-        ('medium', _('medium')),
-        ('large', _('large')),
-        ('x-large', _('extra large')),
+        ('', 'standard'),
+        ('small', 'small'),
+        ('medium', 'medium'),
+        ('large', 'large'),
+        ('x-large', 'extra large'),
     )
     THEMES = (
-        ('', _('standard')),
-        ('dark', _('dark')),
-        ('light', _('light')),
+        ('', 'standard'),
+        ('dark', 'dark'),
+        ('light', 'light'),
     )
 
 class RdIcon(CMSPlugin):
@@ -229,31 +228,31 @@ class RdIcon(CMSPlugin):
     """
 
     icon = models.CharField(
-        verbose_name=_('Icon'),
+        verbose_name='Icon',
         max_length=40,
     )
     size = models.CharField(
-        verbose_name=_('size of icon'),
+        verbose_name='size of icon',
         choices = RdIconConstants.SIZES,
         default='',
         blank=True,
         max_length=10,
     )
     color = models.CharField(
-        verbose_name=_('Color'),
+        verbose_name='Color',
         max_length=30,
         default='',
         blank=True,
     )
     theme = models.CharField(
-        verbose_name=_('Theme'),
+        verbose_name='Theme',
         choices = RdIconConstants.THEMES,
         max_length=10,
         default='',
         blank=True,
     )
     additional_classes= models.CharField(
-        verbose_name=_('Additional CSS classes (separated by a space)'),
+        verbose_name='Additional CSS classes (separated by a space)',
         max_length=255,
         default='',
         blank=True,
@@ -273,42 +272,12 @@ class RdIcon(CMSPlugin):
         return ' '.join(text)
 
 
-class RdPersonGroup(CMSPlugin):
-    """
-    a db model for a list of person in a group
-    """
-    group = models.CharField(
-        verbose_name=_('Group'),
-        max_length=39,
-    )
-    def __str__(self):
-        return self.group
-
-    def get_short_description(self):
-        return self.group
-
-class RdPerson(CMSPlugin):
-    """
-    a db model for a vuetify person
-    """
-
-    idbel = models.CharField(
-        verbose_name=_('ID number RBCF'),
-        max_length=10,
-    )
-    def __str__(self):
-        return self.idbel
-
-    def get_short_description(self):
-        return self.idbel
-
-
 class RdTabGroup(CMSPlugin):
     """
     a db model for a group of tabs
     """
     slidercolor = models.CharField(
-        verbose_name=_('Slider color'),
+        verbose_name='Slider color',
         max_length=40,
         default='accent'
     )
@@ -319,7 +288,7 @@ class RdTab(CMSPlugin):
     """
 
     tabtitle = models.CharField(
-        verbose_name=_('Title of the tab'),
+        verbose_name='Title of the tab',
         max_length=40,
     )
     def __str__(self):
@@ -331,16 +300,16 @@ class RdBox(CMSPlugin):
     """
 
     boxtitle = models.CharField(
-        verbose_name=_('Title of the box'),
+        verbose_name='Title of the box',
         max_length=40,
     )
     boxtitlecolor = models.CharField(
-        verbose_name=_('Box title color'),
+        verbose_name='Box title color',
         max_length=40,
         default='black'
     )
     boxbackgroundcolor = models.CharField(
-        verbose_name=_('Box background color title'),
+        verbose_name='Box background color title',
         max_length=40,
         default='grey'
     )

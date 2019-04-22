@@ -20,7 +20,6 @@ from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django.conf import settings # import the settings file
 from django import forms
-from django.utils.translation import ugettext_lazy as _
 
 from .models import (
     RdBox,
@@ -39,7 +38,7 @@ from .models import (
 class RdGridContainerPlugin(CMSPluginBase):
 
     model = RdGridContainer
-    name = _('Container')
+    name = 'Container'
     module = 'Reddevil'
     render_template = 'rd_django/grid_container.html'
     allow_children = True
@@ -58,7 +57,7 @@ class RdGridContainerPlugin(CMSPluginBase):
 class RdGridLayoutPlugin(CMSPluginBase):
 
     model = RdGridLayout
-    name = _('Layout')
+    name = 'Layout'
     module = 'Reddevil'
     render_template = 'rd_django/grid_layout.html'
     allow_children = True
@@ -78,7 +77,7 @@ class RdGridLayoutPlugin(CMSPluginBase):
 class RdGridCellPlugin(CMSPluginBase):
 
     model = RdGridCell
-    name = _('Cell')
+    name = 'Cell'
     module = 'Reddevil'
     render_template = 'rd_django/grid_cell.html'
     allow_children = True
@@ -104,7 +103,7 @@ class RdGridCellPlugin(CMSPluginBase):
 class RdIconPlugin(CMSPluginBase):
 
     model = RdIcon
-    name = _('Icon')
+    name = 'Icon'
     module = 'Reddevil'
     render_template = 'rd_django/icon.html'
     text_enabled = True
@@ -120,66 +119,10 @@ class RdIconPlugin(CMSPluginBase):
             context, instance, placeholder)
 
 @plugin_pool.register_plugin
-class RdPersonGroupPlugin(CMSPluginBase):
-
-    model = RdPersonGroup
-    name = _('Group of persons')
-    module = 'Reddevil'
-    render_template = 'rd_django/person_group.html'
-    allow_children = True
-    child_classes = ['RdPersonPlugin']
-
-    def render(self, context, instance, placeholder):
-        return super(RdPersonGroupPlugin, self).render(
-            context, instance, placeholder)
-
-
-class RdPersonForm(forms.ModelForm):
-
-    idbel = forms.ChoiceField(choices=('45608','28908'))
-
-
-@plugin_pool.register_plugin
-class RdPersonPlugin(CMSPluginBase):
-
-    model = RdPerson
-    name = _('Person')
-    module = 'Reddevil'
-    render_template = 'rd_django/person.html'
-    require_parent = True
-    # form = RdPersonForm
-
-    def render(self, context, instance, placeholder):
-        ca = settings.CHESSAPI_URL
-        group = instance.parent.rd_django_rdpersongroup.group
-        rs = requests.get("{}members/member/{}".format(ca, instance.idbel))
-        if rs.status_code != 200:
-            person = {
-                'first_name': '',
-                'last_name': 'Not found',
-                'role': '',
-                'mobile': '',
-                'email': ''
-            }
-        else:
-            person = rs.json()
-            person['role'] = None
-            for role in person.get('org', []):
-                if role.get('group') == group:
-                    person['role'] = role.get('role')
-        if person.get('photolength'):
-            person['photourl'] = "{}members/photo/{}".format(ca, instance.idbel)
-        else:
-            person['photourl'] = '/static/img/nobody.png'
-        context.update(person)
-        return super(RdPersonPlugin, self).render(
-            context, instance, placeholder)
-
-@plugin_pool.register_plugin
 class RdTabGroupPlugin(CMSPluginBase):
 
     model = RdTabGroup
-    name = _('Group of tabs')
+    name = 'Group of tabs'
     module = 'Reddevil'
     render_template = 'rd_django/tab_group.html'
     allow_children = True
@@ -194,7 +137,7 @@ class RdTabGroupPlugin(CMSPluginBase):
 class RdTabPlugin(CMSPluginBase):
 
     model = RdTab
-    name = _('Tab')
+    name = 'Tab'
     module = 'Reddevil'
     render_template = 'rd_django/tab.html'
     require_parent = True
@@ -207,12 +150,11 @@ class RdTabPlugin(CMSPluginBase):
         return super(RdTabPlugin, self).render(
             context, instance, placeholder)
 
-
 @plugin_pool.register_plugin
 class RdBoxPlugin(CMSPluginBase):
 
     model = RdBox
-    name = _('Box')
+    name = 'Box'
     module = 'Reddevil'
     render_template = 'rd_django/box.html'
     allow_children = True

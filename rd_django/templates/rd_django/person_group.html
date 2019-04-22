@@ -1,9 +1,0 @@
-{% load cms_tags %}
-
-<v-layout row wrap>
-  {% for plugin in instance.child_plugin_instances %}
-    {% with forloop as parentloop %}{% render_plugin plugin %}{% endwith %}
-  {% endfor %}
-</v-layout>
-
-
