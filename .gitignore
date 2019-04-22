@@ -18,3 +18,5 @@ sample_rd_django/__init__.py
 sample_rd_django/settings.py
 sample_rd_django/urls.py
 sample_rd_django/wsgi.py
+Pipfile.lock
+Pipfile
